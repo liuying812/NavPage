@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>nav page</title>
+	<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+	<header></header>
+	<main>
+		<div class="wrapper" id="mainSec">
+			
+		</div>
+	</main>
+	<footer></footer>
+	<script>
+		keys = {
+			0: ['q','w','e','r','t','y','u','i','o','p'],
+			1: ['a','s','d','f','g','h','j','k','l'],
+			2: ['z','x','c','v','b','n','m'],
+			length: 3
+		}
+
+		hash = {
+			q: 'qq.com',
+			w: 'weibo.com'
+		}
+
+		//取出localStorage 中的uuu 对应的hash,有可能为空
+		hashInLocalStorage = JSON.parse(localStorage.getItem('uuu') || 'null')
+		if(hashInLocalStorage){
+			hash = hashInLocalStorage;
+		}
+
+		//遍历keys，生成kbd标签
+		index = 0;
+		while(index < keys['length']){
+			div1 = document.createElement('div');
+			row = keys[index];
+
+			index1 = 0;
+			while(index1 < row['length']){
+				kbd = document.createElement('kbd');
+				kbd.textContent = row[index1];   /*记住这个语法，不是括号，是等于*/
+
+				editBtn = document.createElement('button');
+				editBtn.textContent = '编辑';
+				editBtn.id = row[index1];
+				//editBtn 是个容器，只装了最后一次循环的结果在里面
+				editBtn.onclick = function(ttt){
+					//ttt里面包含了我们想要的信息ttt.target是每次点击的信息
+					key = ttt.target.id;  //q w e r t...
+
+					x = prompt('请输入一个网址');
+					
+					hash[key] = x; //hash 变更
+
+					localStorage.setItem('uuu', JSON.stringify(hash));// 只能存字符串，所以格式化一下
+
+				}
+
+				kbd.appendChild(editBtn);
+
+				mainSec.appendChild(div1);
+				div1.appendChild(kbd);
+				index1++;
+			}	
+
+			index++;
+		}
+
+		document.onkeypress = function(aaaa){
+			//取到用户输入的键
+			key = aaaa['key'];
+			//关联不同键对应的网址
+			website = hash[key];
+			//打开
+			//location.href = 'http://' + website;  //模拟用户在地址栏输入
+			window.open('http://' + website, '_blank');   //模拟用户新开一个页面
+		}
+	</script>
+</body>
+</html>
