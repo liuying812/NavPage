@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>nav page</title>
+	<title>导航页面</title>
 	<link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
@@ -40,12 +40,29 @@
 
 			index1 = 0;
 			while(index1 < row['length']){
-				kbd = document.createElement('kbd');
-				kbd.textContent = row[index1];   /*记住这个语法，不是括号，是等于*/
+				kbd = document.createElement('kbd');				   
+				txtSpan = document.createElement('span');
+				txtSpan.textContent = row[index1];  /*记住这个语法，不是括号，是等于*/
+				kbd.appendChild(txtSpan);
 
 				editBtn = document.createElement('button');
 				editBtn.textContent = '编辑';
 				editBtn.id = row[index1];
+
+				icoImg = document.createElement('img');
+
+				if(hash[row[index1]]){
+					icoImg.src = 'http://' + hash[row[index1]] + '/favicon.ico';
+				}else {
+					icoImg.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+				}
+
+				icoImg.onerror = function(xxx){
+					xxx.target.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+				}
+
+				kbd.appendChild(icoImg);
+
 				//editBtn 是个容器，只装了最后一次循环的结果在里面
 				editBtn.onclick = function(ttt){
 					//ttt里面包含了我们想要的信息ttt.target是每次点击的信息
@@ -58,9 +75,10 @@
 					localStorage.setItem('uuu', JSON.stringify(hash));// 只能存字符串，所以格式化一下
 
 				}
-
+				kbd.className = 'key';
 				kbd.appendChild(editBtn);
 
+				div1.className = 'row'
 				mainSec.appendChild(div1);
 				div1.appendChild(kbd);
 				index1++;
